@@ -16,13 +16,13 @@ ENV JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
 ENV PATH=$JAVA_HOME/bin:$PATH
 
 # Install Spark 
-ENV SPARK_VERSION=4.0.1
+ARG SPARK_VERSION=4.1.2
 ENV SPARK_HOME=/opt/spark
-RUN wget -q https://archive.apache.org/dist/spark/spark-${SPARK_VERSION}/spark-${SPARK_VERSION}-bin-hadoop3.tgz && \
+
+RUN wget -q https://dlcdn.apache.org/spark/spark-${SPARK_VERSION}/spark-${SPARK_VERSION}-bin-hadoop3.tgz && \
     tar -xzf spark-${SPARK_VERSION}-bin-hadoop3.tgz && \
     mv spark-${SPARK_VERSION}-bin-hadoop3 ${SPARK_HOME} && \
     rm spark-${SPARK_VERSION}-bin-hadoop3.tgz
-ENV PATH=$PATH:$SPARK_HOME/bin
 # Link for Iceberg from https://iceberg.apache.org/releases/
 RUN wget https://repo1.maven.org/maven2/org/apache/iceberg/iceberg-spark-runtime-4.0_2.13/1.10.1/iceberg-spark-runtime-4.0_2.13-1.10.1.jar -P ${SPARK_HOME}/jars/
 COPY ./spark_defaults.conf $SPARK_HOME/conf/spark-defaults.conf
